@@ -119,8 +119,12 @@ public class StaticScanController extends ControllerBase {
                         return true;
                     } else if (!response.isSuccessful()) {
                         GenericErrorResponse errors = gson.fromJson(responseJsonStr, GenericErrorResponse.class);
-                        System.out.println("Package upload failed for the following reasons: " +
-                                errors.toString());
+                        if (errors != null) {
+                            System.out.println("Package upload failed for the following reasons: " + errors.toString());
+                        } else {
+                            // This will print the raw response when the errors object is null, which can help diagnose the issue.
+                            System.out.println("Package upload failed. Response code: " + response.code() + ", Response body: " + responseJsonStr);
+                        }
                         return false;
                     }
                 }
